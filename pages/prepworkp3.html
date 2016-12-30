@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/images/Astronaut-Boombox-2048x2560.jpg">
+
+    <title>The Raid55 Site</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/cover.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+    <div class="site-wrapper">
+        <div class="jumbotron" id="transred">
+            <h1>Part 3 of the DecodeMTL prepwork</h1> 
+            <p>This is all of part 3 of DecodeMTL prepwork</p>
+            
+        </div>
+        
+        <div class="container">
+            <div class="row">
+                <span class="col-lg-3">
+                    <div class="well" id="blueback">
+                        <h3>Show me the FACTOR</h3>
+                        <p>This runs a javascript function that finds the factors</p>
+                        <span class="form-group">
+                          <label for="usr">Whole number:</label>
+                          <input type="text" class="form-control" id="fac_box" style="text-align: center">
+                          <button type="button" class="btn btn-default" id="fracbtn" style="margin-top: 10px" onclick="factorFinder()">Factor me!</button>
+                        </span>
+                        <div id="fac_output" style="margin-top: 10px">(result will be here)</div>
+                    </div>
+                </span>
+                <span class="col-lg-3">
+                    <div class="well" id="oranback">
+                        <h3>The Annoying buttons</h3>
+                        <p>Have you ever wanted to click on pointless buttons that don't do anything but popup and notify you???
+                        Well HAVE JUST THE THING FOR YOU...INTRODUCING THE POPUP BUTTON. all you have to do is click :)</p>
+                        <button type="button" class="btn btn-danger popups" style="margin-top: 10px">CLICK ME!!!</button>
+                        <button type="button" class="btn btn-danger popups" style="margin-top: 10px">NO ME IM BETTER</button>
+                        <button type="button" class="btn btn-danger popups" style="margin-top: 10px">not to brag but...im the best</button>
+                        <button type="button" class="btn btn-danger popups" style="margin-top: 10px">Dont't listen to them, im the best</button>
+                        <button type="button" class="btn btn-info popups" style="margin-top: 10px">nobody ever clicks me:(</button>
+                        <button type="button" class="btn btn-success popups" style="margin-top: 10px">DON't CLICK ON ME PLS</button>
+                    </div>
+                </span>
+                <span class="col-lg-6">
+                    <div class="well" id="purpback">
+                        <h3>Fetching with AJAX</h3>
+                        <p> AJAX is cool and this will let us PULL some info found on another site! thanks for the help with crossorigin.me!!!</p>
+                        <span class="form-group">
+                          <label>Write 'Javascript' in the box...or don't...I can't control you!:</label>
+                          <input type="text" class="form-control" id="ajax_input" style="text-align: center">
+                          <button type="button" class="btn btn-default" id="ajbtton" style="margin-top: 10px">GO AJAX...GO FETC...I mean pull</button>
+                        </span>
+                        <div id="ajax_return"></div>
+                    </div>
+                </span>
+            </div>
+        </div>
+        <div class="mastfoot">
+            <a href="/index.html">
+                <button type="button" class="btn btn-danger" style="margin-top: 10px">Go back home</button>
+            </a>
+            <div class="inner">
+            <p>Brought to you by the coolest framework on the planet...Bootystraps</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/jquery-3.1.1.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+    /*global $*/
+    $(".popups").click(function(){
+        alert('This is the alert that alerts you that you have been alerted successfully... you may now press on "Ok" to move on.');
+    });
+    </script>
+
+  </body>
+</html>
