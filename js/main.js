@@ -56,3 +56,11 @@ ajbutton.addEventListener("click", function() {
   };
   xhr.send();
 });
+
+//All of the jQuery
+/*global $*/
+$(document).ready(function(){
+    $(".popups").click(function(){
+        alert('This is the alert that alerts you that you have been alerted successfully... you may now press on "Ok" to move on.');
+    }); 
+});
