@@ -34,6 +34,8 @@ function makeHTMLforMDNONLY(data) {
     }
     returnBox.insertAdjacentHTML('beforeend',html);
 };
+
+
 //All the AJAJ
 /*I don't like the sound of XML, it sounds complicated for no reason...
 + we are working with JSON so I say AJAJ. I know its stil AJAX but whatever... this is my
@@ -59,6 +61,7 @@ ajbutton.addEventListener("click", function() {
 
 //All of the jQuery
 /*global $*/
+
 $(document).ready(function(){
     $(".popups").click(function(){
         alert('This is the alert that alerts you that you have been alerted successfully... you may now press on "Ok" to move on.');
