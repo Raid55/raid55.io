@@ -113,7 +113,7 @@ body {
    100% { opacity: 0; }
 }
 /* im really mad cuz I wanted to make this work with jQuery but I had some problems
-so I resorted good ol' CSS*/
+so I resorted good ol' CSS, but hey, at least i learned what an @ symbol is in css*/
 
 .smallerNavMargin {
   margin-bottom: 0px;
