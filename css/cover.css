@@ -114,3 +114,7 @@ body {
 }
 /* im really mad cuz I wanted to make this work with jQuery but I had some problems
 so I resorted good ol' CSS*/
+
+.smallerNavMargin {
+  margin-bottom: 0px;
+}
