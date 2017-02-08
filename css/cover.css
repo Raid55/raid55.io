@@ -2,7 +2,7 @@
 html,
 body {
   height: 100%;
-  background: url(/images/galaxy-wallpaper-11.jpg) no-repeat center center fixed; 
+  background: url('../images/galaxy-wallpaper-11.jpg') no-repeat center center fixed;
 	background-size: cover;
 }
 
@@ -102,14 +102,14 @@ body {
 
 #dirbash {
   color: #002db3;
-  
+
 }
 
 #flashin {
   animation: blink 1s linear infinite;
 }
 
-@keyframes blink {  
+@keyframes blink {
    100% { opacity: 0; }
 }
 /* im really mad cuz I wanted to make this work with jQuery but I had some problems
@@ -117,4 +117,51 @@ so I resorted good ol' CSS, but hey, at least i learned what an @ symbol is in c
 
 .smallerNavMargin {
   margin-bottom: 0px;
+}
+
+.grenwell{
+  background-color: rgb(14, 103, 0);
+}
+
+.count{
+
+}
+
+.countdealer{
+
+}
+
+.countplayer{
+  margin-top: 6em
+}
+
+.card{
+  height: 10em;
+}
+.flex{
+	flex-basis: 50vw;
+  display: flex;
+	flex-direction: row;
+  align-items: center;
+	justify-content: center;
+}
+.shuffle input {
+	border-radius: 10px 10px 0 0;
+	padding: 15px;
+  color: #323232;
+	width: 75%;
+  text-align: center;
+  font-size: 22px;
+}
+
+.shuffle button {
+	background-color: rgb(11, 123, 215);
+	border-radius: 0 0 10px 10px;
+  margin:0;
+	color: #323232;
+	cursor: pointer;
+	width: 75%;
+}
+
+#stand,#hitme{
 }
