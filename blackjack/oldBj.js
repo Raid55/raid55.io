@@ -1,5 +1,4 @@
 
-
 //card constructor
 function Card(value,name,suit){
   this.value = value;
@@ -16,11 +15,11 @@ function deck(howMany){
       for( var n = 0; n < this.names.length; n++ ) {
         var value;
         if(this.names[n] == 'A'){
-          value = 11;
+          value = 1;
         }else if(this.names[n] === 'J'||this.names[n] ==='Q'||this.names[n] ==='K'){
           value= 10;
         }else{
-          value= n+1;
+          value = Number(this.names[n]);
         }
         cards.push( new Card(value,this.names[n], this.suits[i] ) );
       }
@@ -84,38 +83,68 @@ function waitForInput(){
   })
 }
 
-function hitMe(game,stack){
-  game[0].push(dealCard(stack))
+function hitMe(game,decks){
+  game[0].push(dealCard(decks))
   var val = game[0].reduce(function(accu,el,indx){
     return accu.value + el.value
   })
-  if(val = 21){
-    stand(stack)
+  if(val > 21 && game[0].indexOf('A') != -1){
+    game[0][game[0].indexOf('A')] = 11
+  }
+  if(val === 21){
+    stand(game,stack,pVal)
   }else if(val < 21){
-    return waitForInput()
+    document.getElementById('board').innerHTML = renderGameHtml(game)
+    waitForInput()
+    .then(function(res){
+      if(res === 'hit'){
+        hitMe(game,decks)
+      }else{
+        stand(game,decks)
+      }
+    })
   }else{
-    bust(stack)
+    bust(game,decks)
   }
 }
-function stand(stack){
-
+function stand(game,decks,pVal){
+  var dVal = game[1].reduce(function(accu,el,indx){
+    return accu.value + el.value
+  })
+  if(dVal < 17){
+    game[1].push(dealCard(decks))
+    stand(game,decks)
+  }else{
+    if(dVal === pVal){
+      document.getElementById('board').innerHTML = renderTieHtml(game)
+    }else if(dVal > pVal && dVal <= 21){
+      document.getElementById('board').innerHTML = renderLossHtml(game)
+    }else{
+      document.getElementById('board').innerHTML = renderWinHtml(game)
+    }
+  }
 }
-function bust(stack){
-  
+function bust(game,decks){
+document.getElementById('board').innerHTML =  renderLossHtml(game)
 }
 //this functions plays and takes the dealt game
-function play(){
+function play(decks){
   var game = deal(decks)
+  var val = game[0].reduce(function(accu,el,indx){
+    return accu.value + el.value
+  })
+  if(val === 21){
+    document.getElementById('board').innerHTML = renderWinHtml(game)
+  }
   document.getElementById('board').innerHTML = renderInitHTML(game)
   waitForInput()
   .then(function(res){
     if(res === 'hit'){
       hitMe(game,decks)
     }else{
-
+      stand(game,decks)
     }
   })
-
 }
 //main function that resests the game and will incorporate everything
 function start(){
@@ -124,10 +153,11 @@ function start(){
     howMany = 1;
   }else if(howMany > 124){
     howMany = 124;
+  }else{
+    howMany = 1
   }
   var decks = superShuffle(howMany)
-  play()
-
+  play(decks)
 }
 
 //ALL html render functions... to be replaced with something betta
@@ -151,14 +181,14 @@ function renderInitHTML(game){
           </div>
           <div class="flex count countdealer">Dealer count: `+dCount+`</div>
           <div class="flex count countplayer">Your count: `+pCount+`</div>
-          <div>
+          <div class='flex'>
             <span>`+playa1Html+`</span>
             <span>`+playa2Html+`</span>
           </div>
           <div class='flex'>
             <span class="playTheGame">
-              <button type="button" class="btn btn-danger" id="stand" style="margin-top: 10px">Let's play</button>
-              <button type="button" class="btn btn-success" id="hitme" style="margin-top: 10px">Let's play</button>
+              <button type="button" class="btn btn-danger" id="stand" style="margin-top: 10px">stand like a little b****</button>
+              <button type="button" class="btn btn-success" id="hitme" style="margin-top: 10px">HIT IT LIKE A MAN WOULD!</button>
             </span>
           </div>`
 }
@@ -168,8 +198,7 @@ function renderGameHtml(game){
   var dealer2Html;
   var dCount;
   var pCount = 0;
-  var playa1Html;
-  var playa2Html;
+  var playerHtml;
   dealer1Html = `<img class="card" src="../images/cards/`+game[1][0].name+game[1][0].suit+`.svg" alt="">`
   dealer2Html = `<img class="card" src="../images/cards/Red_Back.svg" alt="">`
   dCount = game[1][0].value
@@ -185,7 +214,7 @@ function renderGameHtml(game){
           </div>
           <div class="flex count countdealer">Dealer count: `+dCount+`</div>
           <div class="flex count countplayer">Your count: `+pCount+`</div>
-          <div>
+          <div class='flex'>
             `+playerHtml+`
           </div>
           <div class='flex'>
@@ -196,67 +225,99 @@ function renderGameHtml(game){
           </div>`
 }
 
-function renderLossHtml() {
-  var dealer1Html;
-  var dealer2Html;
+function renderLossHtml(game) {
+  var dealerHtml;
   var dCount;
-  var pCount;
-  var playa1Html;
-  var playa2Html;
-  dealer1Html = `<img class="card" src="../images/cards/`+game[1][0].name+game[1][0].suit+`.svg" alt="">`
-  dealer2Html = `<img class="card" src="../images/cards/Red_Back.svg" alt="">`
-  dCount = `<div class="count">The dealer has: `+game[1][0].value+`</div>`
-  playa1Html =`<img class="card" src="../images/cards/`+game[0][0].name+game[0][0].suit+`.svg" alt="">`
-  playa2Html =`<img class="card" src="../images/cards/`+game[0][1].name+game[0][1].suit+`.svg" alt="">`
-  var addPCount = game[0][0].value+game[0][1].value
-  pCount = `<div class="count">You have: `+addPCount+`</div>`
+  var pCount = 0;
+  var playerHtml;
+  for(var i =0; i < game[1].length;i++){
+    dealerHtml += `<span><img class="card" src="../images/cards/`+game[1][i].name+game[1][i].suit+`.svg" alt=""></span>`
+    pCount = pCount + game[1][i].value
+  }
+  dCount = game[1][0].value
+  // playa1Html =`<img class="card" src="../images/cards/`+game[0][0].name+game[0][0].suit+`.svg" alt="">`
+  // playa2Html =`<img class="card" src="../images/cards/`+game[0][1].name+game[0][1].suit+`.svg" alt="">`
+  for(var i =0; i < game[0].length;i++){
+    playerHtml += `<span><img class="card" src="../images/cards/`+game[0][i].name+game[0][i].suit+`.svg" alt=""></span>`
+    pCount = pCount + game[0][i].value
+  }
   return `<div class="flex">
-            <span>`+dealer1Html+`</span>
-            <span>`+dealer2Html+`</span>
+            `+dealerHtml+`
           </div>
           <div class="flex count countdealer">Dealer count: `+dCount+`</div>
           <div class="flex count countplayer">Your count: `+pCount+`</div>
-          <div>
-            <span>`+playa1Html+`</span>
-            <span>`+playa2Html+`</span>
+          <div class='flex'>
+            `+playerHtml+`
           </div>
           <div class='flex'>
-            <span class="playTheGame">
-              <button type="button" class="btn btn-danger" id="stand" style="margin-top: 10px">Let's play</button>
-              <button type="button" class="btn btn-success" id="hitme" style="margin-top: 10px">Let's play</button>
+            <span><h1>BUST</h1></span>
+            <span>
+            <button type="button" class="btn btn-danger" onclick="start()" style="margin-top: 10px">play AGUAIN</button>
+            </span>
+          </div>`
+}
+
+function renderTieHtml(game) {
+  var dealerHtml;
+  var dCount;
+  var pCount = 0;
+  var playerHtml;
+  for(var i =0; i < game[1].length;i++){
+    dealerHtml += `<span><img class="card" src="../images/cards/`+game[1][i].name+game[1][i].suit+`.svg" alt=""></span>`
+    pCount = pCount + game[1][i].value
+  }
+  dCount = game[1][0].value
+  // playa1Html =`<img class="card" src="../images/cards/`+game[0][0].name+game[0][0].suit+`.svg" alt="">`
+  // playa2Html =`<img class="card" src="../images/cards/`+game[0][1].name+game[0][1].suit+`.svg" alt="">`
+  for(var i =0; i < game[0].length;i++){
+    playerHtml += `<span><img class="card" src="../images/cards/`+game[0][i].name+game[0][i].suit+`.svg" alt=""></span>`
+    pCount = pCount + game[0][i].value
+  }
+  return `<div class="flex">
+            `+dealerHtml+`
+          </div>
+          <div class="flex count countdealer">Dealer count: `+dCount+`</div>
+          <div class="flex count countplayer">Your count: `+pCount+`</div>
+          <div class='flex'>
+            `+playerHtml+`
+          </div>
+          <div class='flex'>
+            <span><h1>TIE!!!</h1></span>
+            <span>
+            <button type="button" class="btn btn-danger" onclick="start()" style="margin-top: 10px">play AGUAIN</button>
             </span>
           </div>`
 }
 
 
-function renderFinalHtml() {
-  var dealer1Html;
-  var dealer2Html;
+function renderWinHtml(game) {
+  var dealerHtml;
   var dCount;
-  var pCount;
-  var playa1Html;
-  var playa2Html;
-  dealer1Html = `<img class="card" src="../images/cards/`+game[1][0].name+game[1][0].suit+`.svg" alt="">`
-  dealer2Html = `<img class="card" src="../images/cards/Red_Back.svg" alt="">`
-  dCount = `<div class="count">The dealer has: `+game[1][0].value+`</div>`
-  playa1Html =`<img class="card" src="../images/cards/`+game[0][0].name+game[0][0].suit+`.svg" alt="">`
-  playa2Html =`<img class="card" src="../images/cards/`+game[0][1].name+game[0][1].suit+`.svg" alt="">`
-  var addPCount = game[0][0].value+game[0][1].value
-  pCount = `<div class="count">You have: `+addPCount+`</div>`
+  var pCount = 0;
+  var playerHtml;
+  for(var i =0; i < game[1].length;i++){
+    dealerHtml += `<span><img class="card" src="../images/cards/`+game[1][i].name+game[1][i].suit+`.svg" alt=""></span>`
+    pCount = pCount + game[1][i].value
+  }
+  dCount = game[1][0].value
+  // playa1Html =`<img class="card" src="../images/cards/`+game[0][0].name+game[0][0].suit+`.svg" alt="">`
+  // playa2Html =`<img class="card" src="../images/cards/`+game[0][1].name+game[0][1].suit+`.svg" alt="">`
+  for(var i =0; i < game[0].length;i++){
+    playerHtml += `<span><img class="card" src="../images/cards/`+game[0][i].name+game[0][i].suit+`.svg" alt=""></span>`
+    pCount = pCount + game[0][i].value
+  }
   return `<div class="flex">
-            <span>`+dealer1Html+`</span>
-            <span>`+dealer2Html+`</span>
+            `+dealerHtml+`
           </div>
           <div class="flex count countdealer">Dealer count: `+dCount+`</div>
           <div class="flex count countplayer">Your count: `+pCount+`</div>
-          <div>
-            <span>`+playa1Html+`</span>
-            <span>`+playa2Html+`</span>
+          <div class='flex'>
+            `+playerHtml+`
           </div>
           <div class='flex'>
-            <span class="playTheGame">
-              <button type="button" class="btn btn-danger" id="stand" style="margin-top: 10px">Let's play</button>
-              <button type="button" class="btn btn-success" id="hitme" style="margin-top: 10px">Let's play</button>
+            <span><h1>WIN</h1></span>
+            <span>
+            <button type="button" class="btn btn-danger" onclick="start()" style="margin-top: 10px">play AGUAIN</button>
             </span>
           </div>`
 }
